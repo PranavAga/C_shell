@@ -6,9 +6,12 @@ int isgap(char c){
 }
 
 // Shift all characters of the string from position p to left, by 1 unit
-void shift_left(int p,char*str){
+void shift_left(size_t p,char*str){
     size_t length=strlen(str);
-    if(length==p-1||p<0){
+    if(p<0){
+        cerror("Position can't be less than 0");
+    }
+    if(length==p-1){
         return;
     }
     for(int i=p;i<length-1;i++){
@@ -19,12 +22,17 @@ void shift_left(int p,char*str){
     return;
 }
 
-//Removing extra spaces and tabs from the input
-void remspaces(char*str){
+//Removing extra spaces and tabs from '\n' terminating string input
+int remspaces(char*str){
+    if(str[strlen(str)-1]!='\n'){
+        cerror("remspaces: '\\n' terminated string expected");
+        return -1;
+    }
+
     size_t i=0;
     
     if(strlen(str)==0){
-        return;
+        return 0;
     }
     while(str[i]!='\n'){
         if(isgap(str[i])){
@@ -35,5 +43,5 @@ void remspaces(char*str){
         }
         else i++;
     }
-    return;
+    return 0;
 }

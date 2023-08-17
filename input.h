@@ -5,7 +5,7 @@
 #define SPACE ' '
 
 int isgap(char );
-void shift_left(int,char*);
-void remspaces(char*);
+void shift_left(size_t,char*);
+int remspaces(char*);
 
 #endif

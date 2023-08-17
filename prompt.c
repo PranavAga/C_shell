@@ -12,7 +12,7 @@ void prompt() {
     
     // SystemName(hostname)
     if(gethostname(sysname,MAX_HOSTNAME+1)){
-        pcerror("Error in getting hostname");
+        pcerror("Getting hostname");
     }
     //shell prompt
     else{
