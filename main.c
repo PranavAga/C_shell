@@ -9,5 +9,6 @@ int main()
         prompt();
         char input[4096];
         fgets(input, 4096, stdin);
+        remspaces(input);
     }
 }

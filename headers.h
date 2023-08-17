@@ -10,4 +10,5 @@
 #include "prompt.h"
 #include "color.h"
 #include "pcerror.h"
+#include "input.h"
 #endif
