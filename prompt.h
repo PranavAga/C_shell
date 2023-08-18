@@ -3,6 +3,6 @@
 
 #define MAX_HOSTNAME 255
 
-void prompt();
+void prompt(char*);
 
 #endif

@@ -5,11 +5,22 @@
 
 int main()
 {
+    char launch_dir[MAX_PATH+1];
+    if(getcwd(launch_dir,MAX_PATH+1)==NULL){
+        pcerror("Getting launch directory");
+        return -1;
+    }
     // Keep accepting commands
     while (1)
     {
+        char curr_dir[MAX_PATH+1];
+        if(getcwd(curr_dir,MAX_PATH+1)==NULL){
+            pcerror("Getting current directory");
+            return -1;
+        }
+
         // Print appropriate prompt with username, systemname and directory before accepting input
-        prompt();
+        prompt(effective_path(launch_dir,curr_dir));
         char input[4096];
         fgets(input, 4096, stdin);
         if(remspaces(input)){

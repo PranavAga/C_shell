@@ -45,3 +45,39 @@ int remspaces(char*str){
     }
     return 0;
 }
+
+char* modified(char* launch_dir,char*curr_dir){
+    size_t launch_len=strlen(launch_dir);
+    size_t i=0;
+
+    while (i<launch_len)
+    {
+        // outside the shell's directory
+        if(launch_dir[i]!=curr_dir[i]){
+            return curr_dir;
+        }
+        i++;
+    }
+    size_t eff_size=strlen(curr_dir)-i+1;
+    char *eff_dir=malloc(eff_size);
+    for(size_t j=0;j<eff_size;j++){
+        if (j==0){
+            eff_dir[j]='~';
+        }
+        else{
+            eff_dir[j]=curr_dir[j];
+        }
+    }
+    return eff_dir;
+}
+
+char* effective_path(char* launch_dir,char*curr_dir){
+    
+    if(strcmp(launch_dir,curr_dir)){
+        return strlen(curr_dir)<strlen(launch_dir)?curr_dir:modified(launch_dir,curr_dir);
+    }
+    else{
+        return "~";
+    }
+}
+
