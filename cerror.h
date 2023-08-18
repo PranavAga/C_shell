@@ -3,5 +3,6 @@
 
 void pcerror(char*);
 void cerror(char*);
+void cmderror(char*cmd,char*msg);
 
 #endif

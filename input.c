@@ -36,6 +36,9 @@ int remspaces(char*str){
     }
     while(str[i]!='\n'){
         if(isgap(str[i])){
+            if(str[i]==TAB){
+                str[i]=SPACE;
+            }
             if(i==0||isgap(str[i+1])||str[i+1]=='\n'){
                 shift_left(i,str);
             }
@@ -43,6 +46,7 @@ int remspaces(char*str){
         }
         else i++;
     }
+    str[i]='\0';
     return 0;
 }
 
@@ -58,14 +62,17 @@ char* modified(char* launch_dir,char*curr_dir){
         }
         i++;
     }
-    size_t eff_size=strlen(curr_dir)-i+1;
+    size_t eff_size=strlen(curr_dir)-launch_len+2;
     char *eff_dir=malloc(eff_size);
     for(size_t j=0;j<eff_size;j++){
         if (j==0){
             eff_dir[j]='~';
         }
+        else if(j==eff_size-1){
+            eff_dir[j]='\0';
+        }
         else{
-            eff_dir[j]=curr_dir[j];
+            eff_dir[j]=curr_dir[launch_len+j-1];
         }
     }
     return eff_dir;

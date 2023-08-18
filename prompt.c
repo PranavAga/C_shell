@@ -23,7 +23,7 @@ void prompt(char* dir) {
         BLUE"%s"
         DEFAULT":"
         WHITE"%s"
-        DEFAULT">",
+        DEFAULT"> ",
         pwd_file->pw_name,sysname,dir);
     }
 }

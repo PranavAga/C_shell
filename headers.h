@@ -15,4 +15,6 @@
 #include "color.h"
 #include "cerror.h"
 #include "input.h"
+#include "runcmd.h"
+#include "commands.h"
 #endif

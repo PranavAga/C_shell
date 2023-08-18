@@ -12,3 +12,6 @@ void pcerror(char*title){
 void cerror(char*msg){
     printf(RED"ERROR\n"PURPLE"%s\n"DEFAULT,msg);
 };
+void cmderror(char*cmd,char*msg){
+    printf(RED"ERROR\n"PURPLE"'%s' %s\n"DEFAULT,cmd,msg);
+};
