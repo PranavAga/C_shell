@@ -39,7 +39,9 @@ int remspaces(char*str){
             if(str[i]==TAB){
                 str[i]=SPACE;
             }
-            if(i==0||isgap(str[i+1])||str[i+1]=='\n'){
+            if(i==0||isgap(str[i+1])||str[i+1]=='\n'
+            ||str[i+1]=='&'||(i>0&&str[i-1]=='&')
+            ||str[i+1]==';'||(i>0&&str[i-1]==';')){
                 shift_left(i,str);
             }
             else i++;

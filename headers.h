@@ -1,9 +1,14 @@
 #ifndef HEADERS_H_
 #define HEADERS_H_
 
+#define MULTI_COMMANDS ";"
+#define BACKG_P "&"
+
+#define MAX_INP 4096
 #define MAX_PATH 255
 #define MAX_FILES 65535
 #define MIN_TIMEDIFF 365*24*60*60-60
+#define MAX_INHIST 15
 
 typedef long file_size;
 

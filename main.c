@@ -1,8 +1,5 @@
 #include "headers.h"
 
-#define MULTI_COMMANDS ";"
-#define BACKG_P "&"
-
 int main()
 {
     char launch_dir[MAX_PATH+1];
@@ -24,16 +21,20 @@ int main()
 
         // Print appropriate prompt with username, systemname and directory before accepting input
         prompt(effective_path(launch_dir,curr_dir));
-        char input[4096];
-        fgets(input, 4096, stdin);
+        char input[MAX_INP];
+        fgets(input, MAX_INP, stdin);
+        char executed[MAX_INP]={ 0 };
         if(remspaces(input)){
             continue;
         };
-        
         char*semi_saveptr=NULL;
         char*bgp_saveptr=NULL;
         char*semitoken=__strtok_r(input,MULTI_COMMANDS,&semi_saveptr);
         while (semitoken){
+            if(strlen(semitoken)>0&&semitoken[0]=='&'){
+                cerror("Syntax error using '&'");
+                break;
+            }
             // retokenizing for background processes
             char*bgptoken=__strtok_r(semitoken,BACKG_P,&bgp_saveptr);
             while (bgptoken){
@@ -42,12 +43,23 @@ int main()
                 
                 // check command type then run
                 int type=bgptoken?1:0;
-        
-                runcmd(type,curr_cmd,launch_dir,prev_dir);
+                if(strlen(curr_cmd)>=strlen(PASTEVENTS)&&strncmp(curr_cmd,PASTEVENTS,strlen(PASTEVENTS))==0){
+                    curr_cmd=pastevents(launch_dir,curr_cmd);
+                }
+                if(curr_cmd!=NULL){
+                    add2executed(type,curr_cmd,executed);
+                    if(strcmp(curr_cmd,PASTEVENTS)){
+                        runcmd(type,curr_cmd,launch_dir,prev_dir);
+                    }
+                }
             }
 
             // reinitializing token for multiple commands, ';' seperated
             semitoken=__strtok_r(NULL,MULTI_COMMANDS,&semi_saveptr);
         }
+        // store in pastevents
+        if(strlen(executed)){
+            storeevent(launch_dir,executed);
+        }        
     }
 }

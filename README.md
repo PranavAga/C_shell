@@ -17,7 +17,15 @@ _C Shell_
     Displays only year for the files last modified before almost an year(365 days - 1min) ago. 
         
     Specific color coding to differentiate between file names, directories and executables in the output [green for executables, white for files and blue for directories].
+- ### pastevents
+    Similar to the actual history command in bash. Stores the 15 most recent command statements given as input.
+    -   #### pastevents purge
+        Clears all the pastevents currently stored.
+    -   #### pastevents execute <index>
 
+        Execute the command at position in pastevents (ordered from most recent to oldest). 
+
+ 
 ## Errors
 -   Whenever an error occurs, 'ERROR' is displayed in red, while the description is displayed in pruple.
 # Assumptions
@@ -29,3 +37,7 @@ _C Shell_
     -   multiple or wrong arguments give error.
     -   flags are not necessary
     -   ```peek -``` is an accepted command.
+- 'pastevents'
+    -   for ```execute <idx>``` , idx=1 displays the latest stored command.
+    -   ignoring to store when shell exits without a command
+    -   Doesn't store commands that have the term 'pastevents'.
