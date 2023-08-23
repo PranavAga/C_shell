@@ -90,3 +90,68 @@ char* effective_path(char* launch_dir,char*curr_dir){
     }
 }
 
+struct pnode{
+    pid_t pid;
+    Pnode next;
+    char* name;
+};
+
+// Store a newly created background process's info
+Pnode addbpid(Pnode head, pid_t pid,char*name){
+    Pnode new=malloc(sizeof(struct pnode));
+    if(new==NULL){
+        pcerror("Adding PID to the list:");
+    }
+    new->next=NULL;
+    new->pid=pid;
+    new->name=(char*)malloc(strlen(name)+1);
+    strcpy(new->name,name);
+    if(head!=NULL){
+        Pnode temp=head;
+        while (temp->next)
+        {
+            temp=temp->next;
+        }
+        temp->next=new;
+        return head;
+    }
+    else{
+        return new;
+    }
+}
+
+// Check the completion status of a background process, and print accordingly
+Pnode checkstatus(Pnode head){
+    Pnode temp=head;
+    Pnode tprev=NULL;
+    Pnode newhead=head;
+    while (temp)
+    {
+        int status;
+        pid_t wret=waitpid(temp->pid,&status,WNOHANG);
+        if(wret){
+            if(WIFEXITED(status)){
+                printf("%s exited normaly (%d)\n",temp->name,temp->pid);
+            }
+            else{
+                printf("%s exited abnormaly (%d): status: %d\n",temp->name,temp->pid,status);
+            }
+            //remove node
+            if(temp==newhead){
+                newhead=temp->next;
+            }
+            else{
+                tprev->next=temp->next;
+            }
+            Pnode nxt=temp->next;
+            free(temp->name);
+            free(temp);
+            temp=nxt;
+        }
+        else{
+            tprev=temp;
+            temp=temp->next;
+        }
+    }
+    return newhead;
+}

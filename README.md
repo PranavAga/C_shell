@@ -30,6 +30,8 @@ _C Shell_
 -   Whenever an error occurs, 'ERROR' is displayed in red, while the description is displayed in pruple.
 # Assumptions
 - 'SystemName' in the prompt is the hostname of the system.
+- Not handling background processes for custom commands(commands implemented by me), including printing process ID.
+- Not handling background processes for invalid commands, but printing their PID.
 -   'warp'
     - terminates when a single directory change fails
     - '-' flag has to be used alone (space seperated for multiple arguments), just like in bash.
