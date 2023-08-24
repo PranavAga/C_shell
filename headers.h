@@ -9,6 +9,7 @@
 #define MAX_FILES 65535
 #define MIN_TIMEDIFF 365*24*60*60-60
 #define MAX_INHIST 15
+#define FP_TIMELMT 2
 
 typedef long file_size;
 

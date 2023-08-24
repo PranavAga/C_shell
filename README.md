@@ -32,6 +32,7 @@ _C Shell_
 - 'SystemName' in the prompt is the hostname of the system.
 - Not handling background processes for custom commands(commands implemented by me), including printing process ID.
 - Not handling background processes for invalid commands, but printing their PID.
+- Priting "time taken to execute" only for system foreground processes. Each command is considered, even when multiple commands are executed.
 -   'warp'
     - terminates when a single directory change fails
     - '-' flag has to be used alone (space seperated for multiple arguments), just like in bash.

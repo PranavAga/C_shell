@@ -175,31 +175,6 @@ int printfiles(char**files,int size,int l,int a,char* dir_path,int max_size_digi
         }
         char filepath[MAX_PATH+1];
         struct stat fstat;
-        // if(dir_path[0]=='.'){
-        //     if(strlen(dir_path)==1||strcmp(dir_path,"./")==0){
-        //         strcpy(filepath,"./");
-        //     }
-        //     else{
-        //         if(dir_path[1]=='/'&&strlen(dir_path)>2){                    
-        //             strcpy(filepath,dir_path);
-        //             strcat(filepath,"/");
-        //         }
-        //         else{
-        //             cmderror("peek",": directory path is invalid");
-        //             return -1;
-        //         }
-        //     }
-        // }
-        // else if (dir_path[0]!='/'){// dir inside cwd
-        //     strcpy(filepath,"./");
-        //     strcpy(filepath,dir_path);
-        //     strcat(filepath,"/");
-        // }
-        // else{
-        //     strcpy(filepath,dir_path);
-        //     strcat(filepath,"/");
-        // }
-        // strcat(filepath,files[i]);
         if(getfilepath(filepath,dir_path,files[i])){
             return -1;
         }

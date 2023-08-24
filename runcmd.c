@@ -2,7 +2,7 @@
 
 // Extract command properties and type
 // 0: foreground; 1: background
-int runcmd(int type,char* input, char* launch_dir,char*prev_dir,int*pipefd,Pnode* bpheadptr){
+int runcmd(int type,char* input, char* launch_dir,char*prev_dir,int*pipefd,Pnode* bpheadptr,char*longcmd,time_t*timediff){
     char*cmdtoken=strtok(input," ");
     if(strcmp(WARP,cmdtoken)==0){
         return warp(cmdtoken+strlen(cmdtoken)+1,launch_dir,prev_dir);
@@ -10,16 +10,8 @@ int runcmd(int type,char* input, char* launch_dir,char*prev_dir,int*pipefd,Pnode
     else if(strcmp(PEEK,cmdtoken)==0){
         return peek(cmdtoken+strlen(cmdtoken)+1,launch_dir,prev_dir);
     }
-    // else if(strcmp("bgp",cmdtoken)==0){
-    //     struct pnode* temp=*bpheadptr;
-    //     printf("== Printing running background processes ==");
-    //     while (temp)
-    //     {
-    //         printf("%s (%d)\n",temp->name,temp->pid);
-    //     }
-        
-    // }
     else{
+        time_t begin,end;
         char *list [MAX_INP/2];
         list[0]=cmdtoken;
         int i=1;
@@ -34,6 +26,7 @@ int runcmd(int type,char* input, char* launch_dir,char*prev_dir,int*pipefd,Pnode
         }
         list[i]=NULL;
         int fr=fork();
+        begin=time(NULL);
         if(fr==0){
             if(type){
                     // //open pipe write
@@ -67,9 +60,20 @@ int runcmd(int type,char* input, char* launch_dir,char*prev_dir,int*pipefd,Pnode
                 //     printf("%.*s", readbytes, pbuff);
                 //     readbytes=read(pipefd[0],pbuff,MAX_INP-1);
                 // }
+                strcpy(longcmd,"");
+                *timediff=0;
             }
             if(type==0){
                 wait(NULL);
+                end=time(NULL);
+                if(difftime(end,begin)>FP_TIMELMT){
+                    strcpy(longcmd,cmdtoken);
+                    *timediff=difftime(end,begin);
+                }
+                else{
+                    strcpy(longcmd,"");
+                    *timediff=0;
+                }
             }
             return 0;
         }
@@ -79,10 +83,6 @@ int runcmd(int type,char* input, char* launch_dir,char*prev_dir,int*pipefd,Pnode
         }
         
     }
-    // else{
-    //     cmderror(cmdtoken,"is not a valid command");
-    //     return -1;
-    // }
 }
 
 // Concat executed command(s) to add to pastevents

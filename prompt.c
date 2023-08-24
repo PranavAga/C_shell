@@ -1,7 +1,7 @@
 #include "headers.h"
 
 //shell prompt of the form <Username@SystemName:CurrDir(dir)> when waiting for user input
-void prompt(char* dir) {
+void prompt(char* dir,char*longcmd,time_t timediff) {
     //UserID
     int userID=getuid();
     char sysname[MAX_HOSTNAME+1];
@@ -23,7 +23,11 @@ void prompt(char* dir) {
         BLUE"%s"
         DEFAULT":"
         WHITE"%s"
-        DEFAULT"> ",
+        DEFAULT,
         pwd_file->pw_name,sysname,dir);
+        if(strlen(longcmd)&&timediff>FP_TIMELMT){
+            printf(" %s %lds",longcmd,timediff);
+        }
+        printf("> ");
     }
 }

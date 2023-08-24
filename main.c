@@ -4,6 +4,8 @@ int main()
 {
     char launch_dir[MAX_PATH+1];
     char prev_dir[MAX_PATH+1];
+    char longcmd[MAX_INP];
+    time_t runtime=0;
     prev_dir[0]='\0';
     Pnode bphead=NULL;
     int pipefd[2]; 
@@ -26,13 +28,15 @@ int main()
         }
 
         // Print appropriate prompt with username, systemname and directory before accepting input
-        prompt(effective_path(launch_dir,curr_dir));
+        prompt(effective_path(launch_dir,curr_dir),longcmd,runtime);
         char input[MAX_INP];
         fgets(input, MAX_INP, stdin);
         char executed[MAX_INP]={ 0 };
         if(remspaces(input)){
             continue;
         };
+        // resetting sys foreground process time
+        runtime=0;
         bphead=checkstatus(bphead);
         char*semi_saveptr=NULL;
         char*semitoken=__strtok_r(input,MULTI_COMMANDS,&semi_saveptr);
@@ -61,7 +65,7 @@ int main()
                 if(curr_cmd!=NULL){
                     add2executed(type,curr_cmd,executed);
                     if(strcmp(curr_cmd,PASTEVENTS)){
-                        runcmd(type,curr_cmd,launch_dir,prev_dir,pipefd,&bphead);
+                        runcmd(type,curr_cmd,launch_dir,prev_dir,pipefd,&bphead,longcmd,&runtime);
                     }
                 }
                 
