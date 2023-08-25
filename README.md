@@ -24,7 +24,31 @@ _C Shell_
     -   #### pastevents execute <index>
 
         Execute the command at position in pastevents (ordered from most recent to oldest). 
+- ### proclore
+    Format:<br>
+    ```proclore <pid>```<br>
+    Obtain information regarding a process. If an argument is missing, prints the information of the shell.
 
+    Following information is printed:
+    - PID
+    - Process Status (R/R+/S/S+/Z)
+    - Process group
+    - Virtual Memory
+    - Executable path of process
+    
+    Process states :
+    - R/R+ : Running
+    - S/S+ : Sleeping in an interruptible wait
+    - Z : Zombie
+
+    The “+” signifies whether it is a foreground or background process, i.e., add “+” only if it is a foreground process.
+## System commands
+    Bash commands handled by execvp() is also handled.
+    -   #### Foreground processes
+        Control of terminal is handed over to this process for the time being while it is running. Time taken by the foreground process and the name of the process is printed in the next prompt if process takes > 2 seconds to run.
+
+    -   #### Background processes
+        Any command invoked with “&” is treated as a background command, but is not actually a background process. The shell will spawn that process but doesn’t hand the control of terminal to it. Whenever a new background process is started, the PID of the newly created background process is printed. Whenever background process finishes, a message displays (after command is entered), all background processes ended between the last command run.
  
 ## Errors
 -   Whenever an error occurs, 'ERROR' is displayed in red, while the description is displayed in pruple.
@@ -44,3 +68,5 @@ _C Shell_
     -   for ```execute <idx>``` , idx=1 displays the latest stored command.
     -   ignoring to store when shell exits without a command
     -   Doesn't store commands that have the term 'pastevents'.
+- 'proclore'
+    - only first argument after "proclore" is condsidered.

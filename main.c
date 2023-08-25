@@ -18,6 +18,9 @@ int main()
         pcerror("Getting launch directory");
         return -1;
     }
+
+    pid_t shellp=getpid();
+
     // Keep accepting commands
     while (1)
     {
@@ -65,7 +68,7 @@ int main()
                 if(curr_cmd!=NULL){
                     add2executed(type,curr_cmd,executed);
                     if(strcmp(curr_cmd,PASTEVENTS)){
-                        runcmd(type,curr_cmd,launch_dir,prev_dir,pipefd,&bphead,longcmd,&runtime);
+                        runcmd(type,curr_cmd,launch_dir,prev_dir,pipefd,&bphead,longcmd,&runtime, shellp);
                     }
                 }
                 

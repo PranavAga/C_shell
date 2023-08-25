@@ -13,5 +13,6 @@
 int warp(char*args,char* launch_dir,char*prev_dir);
 int peek(char*args,char* launch_dir,char*prev_dir);
 char*pastevents(char*launch_dir,char*cmd);
+int proclore(char*args,pid_t shellp,char*launch_dir);
 
 #endif
