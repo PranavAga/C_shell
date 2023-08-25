@@ -68,7 +68,7 @@ int main()
                 if(curr_cmd!=NULL){
                     add2executed(type,curr_cmd,executed);
                     if(strcmp(curr_cmd,PASTEVENTS)){
-                        runcmd(type,curr_cmd,launch_dir,prev_dir,pipefd,&bphead,longcmd,&runtime, shellp);
+                        runcmd(type,curr_cmd,launch_dir,curr_dir,prev_dir,pipefd,&bphead,longcmd,&runtime, shellp);
                     }
                 }
                 

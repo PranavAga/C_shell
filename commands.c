@@ -156,7 +156,7 @@ int getfilepath(char*filepath,char*dir_path,char*file){
         }
     else if (dir_path[0]!='/'){// dir inside cwd
         strcpy(filepath,"./");
-        strcpy(filepath,dir_path);
+        strcat(filepath,dir_path);
         strcat(filepath,"/");
     }
     else{
@@ -332,7 +332,7 @@ char*pastevents(char*launch_dir,char*cmd){
     char new_cmd[MAX_INP]={ 0 };
     char filepath[MAX_PATH+1]={0};
     strncpy(filepath,launch_dir,strlen(launch_dir));
-    strcat(filepath,"/");
+    strcat(filepath,"/.");
     strcat(filepath,PASTEVENTS);
 
     if(strcmp(cmd,PASTEVENTS)==0){

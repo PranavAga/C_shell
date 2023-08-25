@@ -5,9 +5,10 @@
 #define PEEK "peek"
 #define PASTEVENTS "pastevents"
 #define PROCLORE "proclore"
+#define SEEK "seek"
 
 int runcmd(int type,char* input,
-    char* launch_dir,char* prev_dir,
+    char* launch_dir,char*curr_dir,char* prev_dir,
     int*pipefd,Pnode* bpheadptr,char*longcmd,time_t*timediff
     ,pid_t shellp);
 void add2executed(int type,char*curr_cmd,char*executed);

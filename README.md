@@ -42,6 +42,17 @@ _C Shell_
     - Z : Zombie
 
     The “+” signifies whether it is a foreground or background process, i.e., add “+” only if it is a foreground process.
+- ### seek
+    Format: <br>
+    ```seek <flags> <search> <target_directory>```<br>
+    Looks for a file/directory in the specified target directory (or current if no directory is specified). It returns a list of relative paths (from target directory) of all matching files/directories (files in green and directories in blue) separated with a newline character.
+    
+    Flags :
+
+    - -d : Only look for directories (ignore files even if name matches)
+    - -f : Only look for files (ignore directories even if name matches)
+    - -e : This flag is effective only when a single file or a single directory with the name is found. If only one file (and no directories) is found, then print it’s output. If only one directory (and no files) is found, then change current working directory to it. Otherwise, the flag has no effect. This flag should work with -d and -f flags. If -e flag is enabled but the directory does not have access permission (execute) or file does not have read permission, then output “Missing permissions for task!”
+
 ## System commands
     Bash commands handled by execvp() is also handled.
     -   #### Foreground processes
@@ -70,3 +81,5 @@ _C Shell_
     -   Doesn't store commands that have the term 'pastevents'.
 - 'proclore'
     - only first argument after "proclore" is condsidered.
+- 'seek'
+    - 'search' can not be empty

@@ -2,7 +2,7 @@
 
 // Extract command properties and type
 // 0: foreground; 1: background
-int runcmd(int type,char* input, char* launch_dir,char*prev_dir,int*pipefd,Pnode* bpheadptr,char*longcmd,time_t*timediff,pid_t shellp){
+int runcmd(int type,char* input, char* launch_dir,char*curr_dir,char*prev_dir,int*pipefd,Pnode* bpheadptr,char*longcmd,time_t*timediff,pid_t shellp){
     char*cmdtoken=strtok(input," ");
     if(strcmp(WARP,cmdtoken)==0){
         return warp(cmdtoken+strlen(cmdtoken)+1,launch_dir,prev_dir);
@@ -12,6 +12,9 @@ int runcmd(int type,char* input, char* launch_dir,char*prev_dir,int*pipefd,Pnode
     }
     else if(strcmp(PROCLORE,cmdtoken)==0){
         return proclore(cmdtoken+strlen(cmdtoken)+1, shellp,launch_dir);
+    }
+    else if(strcmp(SEEK,cmdtoken)==0){
+        return seek(cmdtoken+strlen(cmdtoken)+1,curr_dir,prev_dir);
     }
     else{
         time_t begin,end;
