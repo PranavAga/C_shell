@@ -1,4 +1,4 @@
-#include "headers.h"
+#include "../headers.h"
 
 // get absolute path of a file in a directory
 void rel2abs(char*abstarg_dir,char*targ_dir,char*curr_dir){

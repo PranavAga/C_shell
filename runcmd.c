@@ -128,7 +128,7 @@ void storeevent(char*launch_dir,char* cmd){
 
     char filepath[MAX_PATH+1]={0};
     strncpy(filepath,launch_dir,strlen(launch_dir));
-    strcat(filepath,"/");
+    strcat(filepath,"/.");
     strcat(filepath,PASTEVENTS);
 
     FILE*history=fopen(filepath,"a+");

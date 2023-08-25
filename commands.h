@@ -19,5 +19,6 @@ int seek(char*args,char* curr_dir,char*prev_dir);
 
 // utility function
 void tilde2abs(char*arg,char*launch_dir,char*newdir);
+int hyph2abs(char* cmd,char*arg,char*prev_dir,char*newdir);
 
 #endif
