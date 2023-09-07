@@ -84,3 +84,6 @@ _C Shell_
     - only first argument after "proclore" is condsidered.
 - 'seek'
     - 'search' can not be empty
+- I/O Redirection
+    - throws error when the first I/O symbols don't have string next to it.
+    - considers first file only when multiple files are entred for either input or output.

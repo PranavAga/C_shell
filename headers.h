@@ -3,6 +3,10 @@
 
 #define MULTI_COMMANDS ";"
 #define BACKG_P "&"
+#define PIPE_CMD "|"
+#define RD_FILE "<"
+#define OT_FILE ">"
+#define OA_FILE ">>"
 
 #define MAX_INP 4096
 #define MAX_PATH 255

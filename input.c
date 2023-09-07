@@ -41,7 +41,11 @@ int remspaces(char*str){
             }
             if(i==0||isgap(str[i+1])||str[i+1]=='\n'
             ||str[i+1]=='&'||(i>0&&str[i-1]=='&')
-            ||str[i+1]==';'||(i>0&&str[i-1]==';')){
+            ||str[i+1]==';'||(i>0&&str[i-1]==';')
+            ||str[i+1]==PIPE_CMD[0]||(i>0&&str[i-1]==PIPE_CMD[0])
+            // ||str[i+1]==OA_FILE[0]||(i>0&&str[i-1]==OA_FILE[0])
+            // ||str[i+1]==OT_FILE[0]||(i>0&&str[i-1]==OT_FILE[0])
+            ||str[i+1]==RD_FILE[0]||(i>0&&str[i-1]==RD_FILE[0])){
                 shift_left(i,str);
             }
             else i++;
@@ -154,4 +158,38 @@ Pnode checkstatus(Pnode head){
         }
     }
     return newhead;
+}
+
+//gives start and stop pos of next I/O symbol
+void file_pos(int pos[2] ,char* str_ptr){
+    pos[0]=0;
+    pos[1]=0;
+
+    // only includes the I/O symbol
+    if (strlen(str_ptr)<2){
+        return;
+    }
+    // char*temp=str_ptr+1;
+    str_ptr++;
+    pos[0]++;
+    pos[1]++;
+    for(int i=0;i<strlen(str_ptr);i++){
+        if(str_ptr[i]!=' '){
+            if(str_ptr[i]==RD_FILE[0]||str_ptr[i]==OA_FILE[0]){
+                pos[0]=0;
+                pos[1]=0;
+                return;
+            }
+            break;
+        }
+        pos[0]++;
+        pos[1]++;
+    }
+    for(int i=pos[0];i<strlen(str_ptr);i++){
+        if(str_ptr[i]==RD_FILE[0]||str_ptr[i]==OA_FILE[0] || str_ptr[i]==' '){
+            break;
+        }
+        pos[1]++;
+    }    
+    return ;
 }

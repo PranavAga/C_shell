@@ -12,5 +12,6 @@ int remspaces(char*);
 char* effective_path(char*,char*);
 Pnode addbpid(Pnode head, pid_t pid,char*name);
 Pnode checkstatus(Pnode head);
+void file_pos(int pos[2] ,char* str_ptr);
 
 #endif

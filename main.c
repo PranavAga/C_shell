@@ -68,7 +68,77 @@ int main()
                 if(curr_cmd!=NULL){
                     add2executed(type,curr_cmd,executed);
                     if(strcmp(curr_cmd,PASTEVENTS)){
-                        runcmd(type,curr_cmd,launch_dir,curr_dir,prev_dir,pipefd,&bphead,longcmd,&runtime, shellp);
+                        // Checking for pipes
+                        if(curr_cmd[0]==PIPE_CMD[0] || curr_cmd[strlen(curr_cmd)-1]==PIPE_CMD[0]){
+                            cerror("Invalid use of pipe");
+                            break;
+                        }
+                        char*io_saveptr=NULL;
+                        char*iotoken=__strtok_r(curr_cmd,PIPE_CMD,&io_saveptr);
+                        int opipe=0;
+                        int ipipe=0;
+                        while(iotoken){
+                            char*pcurr_cmd=iotoken;
+                            iotoken=__strtok_r(NULL,PIPE_CMD,&io_saveptr);
+                            
+                            opipe=iotoken? 1:0;
+                            // printf("ipipe = %d opipe = %d\t%s\n",ipipe,opipe,pcurr_cmd);
+                            if (pcurr_cmd[0]==OT_FILE[0]||pcurr_cmd[0]==OA_FILE[0]||pcurr_cmd[0]==RD_FILE[0]){
+                                cerror("Syntax Error for I/O Redirection");
+                                break;
+                            }
+
+                            char io_pcmd[strlen(pcurr_cmd)+1];
+                            strcpy(io_pcmd,pcurr_cmd);
+
+                            // Find location of the first I/O symbols
+                            char*inp_ptr=strstr(io_pcmd,RD_FILE);
+                            char*ot_ptr=strstr(io_pcmd,OT_FILE);
+                            char*oa_ptr=strstr(io_pcmd,OA_FILE);
+                            char*oup_ptr=oa_ptr;
+                            if(ot_ptr!=NULL && oa_ptr!=NULL && ot_ptr<oa_ptr ){
+                                oup_ptr=ot_ptr;
+                            }
+                            else if(ot_ptr!=NULL && oa_ptr==NULL){
+                                oup_ptr=ot_ptr;
+                            }
+
+                            char i_file[MAX_PATH]="\0";
+                            char o_file[MAX_PATH]="\0";
+                            // char cmd[strlen(pcurr_cmd)+1];
+
+                            char*cmd_saveptr=NULL;
+                            char*cmdtoken=__strtok_r(pcurr_cmd,"><",&cmd_saveptr);
+
+                            // getting first input or output file
+                            if(inp_ptr){
+                                int nchars[2] ;
+                                file_pos(nchars,inp_ptr);
+                                if(nchars[1]==0){
+                                    cerror("Expected a file name after '<'");
+                                    break;
+                                }
+                                strncpy(i_file,inp_ptr+nchars[0],nchars[1]-nchars[0]+1);
+                            }
+                            if(oup_ptr){
+                                if(oup_ptr==oa_ptr){
+                                    oup_ptr++;
+                                }
+                                int nchars[2] ;
+                                file_pos(nchars,oup_ptr);
+                                if(nchars[1]==0){
+                                    cerror("Expected a file name after '>'");
+                                    break;
+                                }
+                                strncpy(o_file,oup_ptr+nchars[0],nchars[1]-nchars[0]+1);
+                            }
+                            // printf("|CMD: %s,I: %s, O: %s|\n",cmdtoken,i_file,o_file);
+                            // runcmd(type,curr_cmd,launch_dir,curr_dir,prev_dir,
+                            // pipefd,&bphead,longcmd,&runtime, shellp,
+                            // ipipe,opipe);
+                            ipipe=1;
+                        }
+                        
                     }
                 }
                 
