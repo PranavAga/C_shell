@@ -2,8 +2,76 @@
 
 // Extract command properties and type
 // 0: foreground; 1: background
-int runcmd(int type,char* input, char* launch_dir,char*curr_dir,char*prev_dir,int*pipefd,Pnode* bpheadptr,char*longcmd,time_t*timediff,pid_t shellp){
-    
+int runcmd(int type,char* input, char* launch_dir,char*curr_dir,char*prev_dir,Pnode* bpheadptr,char*longcmd,time_t*timediff,pid_t shellp,
+int is_ipipe,int is_opipe,char* i_file,char* o_file,int* ipipe,int* opipe, int oappend
+){
+    // Backup of stdio, stdin
+    int cpy_stdin=dup(STDIN_FILENO);
+    int cpy_stdout=dup(STDOUT_FILENO);
+    int offd;
+    int iffd;
+
+    if (is_ipipe&&!strlen(i_file)){
+        if(dup2(ipipe[0],STDIN_FILENO)<0){
+            pcerror("duplicating 2 STDIN");
+            return -1;
+        };
+        close(ipipe[0]);
+    }
+    else if(strlen(i_file)){
+        char effective_path[MAX_PATH+1];
+        if(i_file[0]=='~'){
+            tilde2abs(i_file,launch_dir,effective_path);
+        }
+        else{
+            strcpy(effective_path,i_file);
+        }
+        
+        iffd=open(effective_path,O_RDONLY);
+        if(iffd<0){
+            if(errno==ENOENT){
+                cerror("No such input file found!");
+            }
+            else{
+                pcerror("Input file file");
+            }
+            return -1;
+        };
+        if(dup2(iffd,STDIN_FILENO)<0){
+            pcerror("duplicating 2 STDIN");
+        };
+    }
+    if(is_opipe&&!strlen(o_file)){
+        if(dup2(opipe[1],STDOUT_FILENO)<0){
+            pcerror("duplicating 2 STDOUT");
+            return -1;
+        };
+        close(opipe[1]);
+    }
+    else if(strlen(o_file)){
+        // Handle file path: "..", "." and / handled by open()
+        char effective_path[MAX_PATH+1];
+        if(o_file[0]=='~'){
+            tilde2abs(o_file,launch_dir,effective_path);
+        }
+        else{
+            strcpy(effective_path,o_file);
+        }
+        if(oappend){
+            offd=open(effective_path,O_APPEND|O_CREAT|O_WRONLY,OUT_PERMS);
+        }
+        else{
+            offd=open(effective_path,O_CREAT|O_TRUNC|O_WRONLY,OUT_PERMS);
+        }
+        if(offd<0){
+            pcerror("Output file");
+            return -1;
+        };
+        if(dup2(offd,STDOUT_FILENO)<0){
+            pcerror("duplicating 2 STDOUT");
+            return -1;
+        };
+    }
     
     char*cmdtoken=strtok(input," ");
     if(strcmp(WARP,cmdtoken)==0){
@@ -36,12 +104,13 @@ int runcmd(int type,char* input, char* launch_dir,char*curr_dir,char*prev_dir,in
         int fr=fork();
         begin=time(NULL);
         if(fr==0){
+            // Handle group process
             if(type){
-                    // //open pipe write
-                    // //close(STDIN_FILENO);
-                    // dup2(pipefd[1],STDOUT_FILENO);
-                    // close(pipefd[1]);
+                if(setpgid(0,0)<0){
+                    pcerror("Settign gid of a background process");
+                }
             }
+            // FIXME: sed 's/ //g'
             int sysret=execvp(cmdtoken,list);
             
             if(sysret){
@@ -54,7 +123,6 @@ int runcmd(int type,char* input, char* launch_dir,char*curr_dir,char*prev_dir,in
             }
         }
         else if(fr>0){
-            close(pipefd[1]);
             if(type){
                 printf("%d\n",fr);
                 *bpheadptr=addbpid(*bpheadptr,fr,cmdtoken);
@@ -83,7 +151,6 @@ int runcmd(int type,char* input, char* launch_dir,char*curr_dir,char*prev_dir,in
                     *timediff=0;
                 }
             }
-            return 0;
         }
         else{
             cerror("Couldn't create child process");
@@ -91,6 +158,28 @@ int runcmd(int type,char* input, char* launch_dir,char*curr_dir,char*prev_dir,in
         }
         
     }
+
+    // Restoring stdin, stdout and other fds      
+    if (is_ipipe||strlen(i_file)){
+        if(dup2(cpy_stdin,STDIN_FILENO)<0){
+            pcerror("Restoring stdin");
+            return -1;
+        }
+        if(strlen(i_file)){
+            close(iffd);
+        }
+    } 
+    if(is_opipe||strlen(o_file)){
+        if(dup2(cpy_stdout,STDOUT_FILENO)<0){
+            pcerror("Restoring stdout");
+            return -1;
+        }
+        if(strlen(o_file)){
+            close(offd);
+        }
+    }
+    
+    return 0;
 }
 
 // Concat executed command(s) to add to pastevents

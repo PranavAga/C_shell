@@ -8,11 +8,6 @@ int main()
     time_t runtime=0;
     prev_dir[0]='\0';
     Pnode bphead=NULL;
-    int pipefd[2]; 
-    if(pipe(pipefd)){
-        pcerror("Couldn't initialize pipe");
-        return -1;
-    }
 
     if(getcwd(launch_dir,MAX_PATH+1)==NULL){
         pcerror("Getting launch directory");
@@ -36,6 +31,7 @@ int main()
         fgets(input, MAX_INP, stdin);
         char executed[MAX_INP]={ 0 };
         if(remspaces(input)){
+            // printf("\n");
             continue;
         };
         // resetting sys foreground process time
@@ -60,7 +56,7 @@ int main()
                 bgptoken=__strtok_r(NULL,BACKG_P,&bgp_saveptr);
 
                 // check command type then run
-                type=bgptoken==NULL&&forelast?0:1;
+                type=(bgptoken==NULL)&&(forelast)?0:1;
 
                 if(strlen(curr_cmd)>=strlen(PASTEVENTS)&&strncmp(curr_cmd,PASTEVENTS,strlen(PASTEVENTS))==0){
                     curr_cmd=pastevents(launch_dir,curr_cmd);
@@ -69,32 +65,52 @@ int main()
                     add2executed(type,curr_cmd,executed);
                     if(strcmp(curr_cmd,PASTEVENTS)){
                         // Checking for pipes
-                        if(curr_cmd[0]==PIPE_CMD[0] || curr_cmd[strlen(curr_cmd)-1]==PIPE_CMD[0]){
+                        if(curr_cmd[0]==PIPE_CMD[0] || curr_cmd[strlen(curr_cmd)-1]==PIPE_CMD[0] || strstr(curr_cmd,"||")){
                             cerror("Invalid use of pipe");
                             break;
                         }
                         char*io_saveptr=NULL;
                         char*iotoken=__strtok_r(curr_cmd,PIPE_CMD,&io_saveptr);
-                        int opipe=0;
-                        int ipipe=0;
+                        int is_opipe=0;
+                        int is_ipipe=0;
+                        int ipipe[2]={STDIN_FILENO,STDOUT_FILENO};
+                        int opipe[2]={STDIN_FILENO,STDOUT_FILENO};
+
                         while(iotoken){
                             char*pcurr_cmd=iotoken;
                             iotoken=__strtok_r(NULL,PIPE_CMD,&io_saveptr);
                             
-                            opipe=iotoken? 1:0;
-                            // printf("ipipe = %d opipe = %d\t%s\n",ipipe,opipe,pcurr_cmd);
+                            is_opipe=iotoken? 1:0;
+
+                            if(is_ipipe){
+                                ipipe[0]=opipe[0];
+                                ipipe[1]=opipe[1];
+                            }
+                            if(is_opipe){
+                                if(pipe(opipe)){
+                                    // TODO: close pipes wherever
+                                    pcerror("Couldn't initialize output pipe");
+                                    return -1;
+                                }
+                            }
+                            else{
+                                opipe[0]=STDIN_FILENO;
+                                opipe[1]=STDOUT_FILENO;
+                            }
                             if (pcurr_cmd[0]==OT_FILE[0]||pcurr_cmd[0]==OA_FILE[0]||pcurr_cmd[0]==RD_FILE[0]){
                                 cerror("Syntax Error for I/O Redirection");
                                 break;
                             }
 
                             char io_pcmd[strlen(pcurr_cmd)+1];
+                            char io_pcmd_cpy[strlen(pcurr_cmd)+1];
                             strcpy(io_pcmd,pcurr_cmd);
+                            strcpy(io_pcmd_cpy,pcurr_cmd);
 
                             // Find location of the first I/O symbols
-                            char*inp_ptr=strstr(io_pcmd,RD_FILE);
-                            char*ot_ptr=strstr(io_pcmd,OT_FILE);
-                            char*oa_ptr=strstr(io_pcmd,OA_FILE);
+                            char*inp_ptr=strstr(io_pcmd_cpy,RD_FILE);
+                            char*ot_ptr=strstr(io_pcmd_cpy,OT_FILE);
+                            char*oa_ptr=strstr(io_pcmd_cpy,OA_FILE);
                             char*oup_ptr=oa_ptr;
                             if(ot_ptr!=NULL && oa_ptr!=NULL && ot_ptr<oa_ptr ){
                                 oup_ptr=ot_ptr;
@@ -105,11 +121,15 @@ int main()
 
                             char i_file[MAX_PATH]="\0";
                             char o_file[MAX_PATH]="\0";
-                            // char cmd[strlen(pcurr_cmd)+1];
+                            int oappend=0;
 
                             char*cmd_saveptr=NULL;
-                            char*cmdtoken=__strtok_r(pcurr_cmd,"><",&cmd_saveptr);
-
+                            char*cmdtoken=__strtok_r(io_pcmd,"><",&cmd_saveptr);
+                            
+                            // to not inlcude the files in the same address series, for further implementation
+                            char onlycmd[strlen(cmdtoken)+1];
+                            strcpy(onlycmd,cmdtoken);
+                            
                             // getting first input or output file
                             if(inp_ptr){
                                 int nchars[2] ;
@@ -122,6 +142,7 @@ int main()
                             }
                             if(oup_ptr){
                                 if(oup_ptr==oa_ptr){
+                                    oappend=1;
                                     oup_ptr++;
                                 }
                                 int nchars[2] ;
@@ -133,10 +154,13 @@ int main()
                                 strncpy(o_file,oup_ptr+nchars[0],nchars[1]-nchars[0]+1);
                             }
                             // printf("|CMD: %s,I: %s, O: %s|\n",cmdtoken,i_file,o_file);
-                            // runcmd(type,curr_cmd,launch_dir,curr_dir,prev_dir,
-                            // pipefd,&bphead,longcmd,&runtime, shellp,
-                            // ipipe,opipe);
-                            ipipe=1;
+                            // printf("type = %d is_ipipe = %d is_opipe = %d\n",type,is_ipipe,is_opipe);
+                            
+                            runcmd(type,onlycmd,launch_dir,curr_dir,prev_dir,
+                            &bphead,longcmd,&runtime, shellp,
+                            is_ipipe,is_opipe,i_file,o_file,ipipe,opipe,oappend);
+                            
+                            is_ipipe=1;
                         }
                         
                     }

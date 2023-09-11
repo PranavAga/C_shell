@@ -14,6 +14,7 @@
 #define MIN_TIMEDIFF 365*24*60*60-60
 #define MAX_INHIST 15
 #define FP_TIMELMT 2
+#define OUT_PERMS 0644
 
 typedef long file_size;
 
@@ -28,6 +29,7 @@ typedef long file_size;
 #include <dirent.h>
 #include <sys/stat.h>
 #include <time.h>
+#include <fcntl.h>
 
 #include "prompt.h"
 #include "color.h"

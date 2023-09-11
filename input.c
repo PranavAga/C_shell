@@ -132,6 +132,7 @@ Pnode checkstatus(Pnode head){
     while (temp)
     {
         int status;
+        // FIXME: nano no exit
         pid_t wret=waitpid(temp->pid,&status,WNOHANG);
         if(wret){
             if(WIFEXITED(status)){

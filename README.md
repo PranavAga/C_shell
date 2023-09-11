@@ -69,6 +69,9 @@ _C Shell_
 - Not handling background processes for custom commands(commands implemented by me), including printing process ID.
 - Not handling background processes for invalid commands, but printing their PID.
 - Priting "time taken to execute" only for system foreground processes. Each command is considered, even when multiple commands are executed.
+- System commands:
+    - all space seperated strings are considered as an argument for the command
+    - Not handling ```"``` explicitly.
 -   'warp'
     - terminates when a single directory change fails
     - '-' flag has to be used alone (space seperated for multiple arguments), just like in bash.
@@ -87,3 +90,5 @@ _C Shell_
 - I/O Redirection
     - throws error when the first I/O symbols don't have string next to it.
     - considers first file only when multiple files are entred for either input or output.
+    - if the output is being redirected to a file and being piped, it is not piped and the pipe is empty
+    - if the input is piped to and the next commands can take input from a file, it takes input only from the file and the pipe becomes empty
