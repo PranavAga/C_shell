@@ -43,7 +43,7 @@ int main()
         };
         // resetting sys foreground process time
         runtime=0;// TODO: for individual?
-        
+        bphead=checkstatus(bphead);
         char*semi_saveptr=NULL;
         char*semitoken=__strtok_r(input,MULTI_COMMANDS,&semi_saveptr);
         while (semitoken){
@@ -95,7 +95,6 @@ int main()
                             }
                             if(is_opipe){
                                 if(pipe(opipe)){
-                                    // TODO: close pipes wherever
                                     pcerror("Couldn't initialize output pipe");
                                     return -1;
                                 }
@@ -160,7 +159,7 @@ int main()
                                 }
                                 strncpy(o_file,oup_ptr+nchars[0],nchars[1]-nchars[0]+1);
                             }
-                            // printf("|CMD: %s,I: %s, O: %s|\n",cmdtoken,i_file,o_file);
+                            // printf("|CMD: %s,I: %s, O: %s|\n",onlycmd,i_file,o_file);
                             // printf("type = %d is_ipipe = %d is_opipe = %d\n",type,is_ipipe,is_opipe);
                             
                             runcmd(type,onlycmd,
@@ -183,6 +182,5 @@ int main()
         if(strlen(executed)){
             storeevent(launch_dir,executed);
         }
-        bphead=checkstatus(bphead);        
     }
 }

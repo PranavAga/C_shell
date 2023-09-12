@@ -2,9 +2,11 @@
 
 // Extract command properties and type
 // 0: foreground; 1: background
-int runcmd(int type,char* input, char* launch_dir,char*curr_dir,char*prev_dir,Pnode* bpheadptr,Pnode* allpheadptr,char*longcmd,time_t*timediff,pid_t shellp,
-int is_ipipe,int is_opipe,char* i_file,char* o_file,int* ipipe,int* opipe, int oappend
-){
+int runcmd(int type,char* input,
+    char* launch_dir,char*curr_dir,char* prev_dir,
+    Pnode* bpheadptr, Pnode* allpheadptr,char*longcmd,time_t*timediff,pid_t shellp, 
+    int is_ipipe,int is_opipe,char* i_file,char* o_file,int* ipipe,int* opipe, int oappend)
+{
     // Backup of stdio, stdin
     int cpy_stdin=dup(STDIN_FILENO);
     int cpy_stdout=dup(STDOUT_FILENO);
@@ -72,7 +74,7 @@ int is_ipipe,int is_opipe,char* i_file,char* o_file,int* ipipe,int* opipe, int o
             return -1;
         };
     }
-    
+
     char*cmdtoken=strtok(input," ");
     if(strcmp(WARP,cmdtoken)==0){
         return warp(cmdtoken+strlen(cmdtoken)+1,launch_dir,prev_dir);
@@ -81,7 +83,7 @@ int is_ipipe,int is_opipe,char* i_file,char* o_file,int* ipipe,int* opipe, int o
         return peek(cmdtoken+strlen(cmdtoken)+1,launch_dir,prev_dir);
     }
     else if(strcmp(PROCLORE,cmdtoken)==0){
-        return proclore(cmdtoken+strlen(cmdtoken), shellp,launch_dir);
+        return proclore(strtok(NULL," "), shellp,launch_dir);
     }
     else if(strcmp(SEEK,cmdtoken)==0){
         return seek(cmdtoken+strlen(cmdtoken)+1,curr_dir,prev_dir);
@@ -90,7 +92,6 @@ int is_ipipe,int is_opipe,char* i_file,char* o_file,int* ipipe,int* opipe, int o
         return activities(*allpheadptr);
     }
     else{
-        // FIXME: fgp after bgp, ok in pA
         time_t begin,end;
         char *list [MAX_INP/2];
         list[0]=cmdtoken;
@@ -114,7 +115,6 @@ int is_ipipe,int is_opipe,char* i_file,char* o_file,int* ipipe,int* opipe, int o
                     pcerror("Settign gid of a background process");
                 }
             }
-            // FIXME: sed 's/ //g'
             int sysret=execvp(cmdtoken,list);
             
             if(sysret){
@@ -141,6 +141,7 @@ int is_ipipe,int is_opipe,char* i_file,char* o_file,int* ipipe,int* opipe, int o
                 //     readbytes=read(pipefd[0],pbuff,MAX_INP-1);
                 // }
                 strcpy(longcmd,"");
+                *timediff=0;
             }
             if(type==0){
                 wait(NULL);
