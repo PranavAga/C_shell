@@ -94,11 +94,7 @@ char* effective_path(char* launch_dir,char*curr_dir){
     }
 }
 
-struct pnode{
-    pid_t pid;
-    Pnode next;
-    char* name;
-};
+
 
 // Store a newly created background process's info
 Pnode addbpid(Pnode head, pid_t pid,char*name){

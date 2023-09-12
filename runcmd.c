@@ -2,7 +2,7 @@
 
 // Extract command properties and type
 // 0: foreground; 1: background
-int runcmd(int type,char* input, char* launch_dir,char*curr_dir,char*prev_dir,Pnode* bpheadptr,char*longcmd,time_t*timediff,pid_t shellp,
+int runcmd(int type,char* input, char* launch_dir,char*curr_dir,char*prev_dir,Pnode* bpheadptr,Pnode* allpheadptr,char*longcmd,time_t*timediff,pid_t shellp,
 int is_ipipe,int is_opipe,char* i_file,char* o_file,int* ipipe,int* opipe, int oappend
 ){
     // Backup of stdio, stdin
@@ -86,7 +86,11 @@ int is_ipipe,int is_opipe,char* i_file,char* o_file,int* ipipe,int* opipe, int o
     else if(strcmp(SEEK,cmdtoken)==0){
         return seek(cmdtoken+strlen(cmdtoken)+1,curr_dir,prev_dir);
     }
+    else if(strcmp(ACTIVITIES,cmdtoken)==0){
+        return activities(*allpheadptr);
+    }
     else{
+        // FIXME: fgp after bgp, ok in pA
         time_t begin,end;
         char *list [MAX_INP/2];
         list[0]=cmdtoken;
@@ -137,7 +141,6 @@ int is_ipipe,int is_opipe,char* i_file,char* o_file,int* ipipe,int* opipe, int o
                 //     readbytes=read(pipefd[0],pbuff,MAX_INP-1);
                 // }
                 strcpy(longcmd,"");
-                *timediff=0;
             }
             if(type==0){
                 wait(NULL);
@@ -151,6 +154,7 @@ int is_ipipe,int is_opipe,char* i_file,char* o_file,int* ipipe,int* opipe, int o
                     *timediff=0;
                 }
             }
+            *allpheadptr=addbpid(*allpheadptr,fr,cmdtoken);
         }
         else{
             cerror("Couldn't create child process");

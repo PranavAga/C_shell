@@ -53,7 +53,10 @@ _C Shell_
     - -d : Only look for directories (ignore files even if name matches)
     - -f : Only look for files (ignore directories even if name matches)
     - -e : This flag is effective only when a single file or a single directory with the name is found. If only one file (and no directories) is found, then print it’s output. If only one directory (and no files) is found, then change current working directory to it. Otherwise, the flag has no effect. This flag should work with -d and -f flags. If -e flag is enabled but the directory does not have access permission (execute) or file does not have read permission, then output “Missing permissions for task!”
-
+- ### activities
+    Format: <br>
+    ```activities```<br>
+    Prints a list of all the processes that were spawned by your shell, in the current run, in lexicographic order.
 ## System commands
     Bash commands handled by execvp() is also handled.
     -   #### Foreground processes

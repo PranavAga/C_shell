@@ -1,5 +1,7 @@
 #include "headers.h"
 
+
+
 int main()
 {
     char launch_dir[MAX_PATH+1];
@@ -7,6 +9,11 @@ int main()
     char longcmd[MAX_INP];
     time_t runtime=0;
     prev_dir[0]='\0';
+    
+    // head to ll of all processess spawned
+    Pnode allphead=NULL;
+
+    // head to ll of all active bg processess spawned
     Pnode bphead=NULL;
 
     if(getcwd(launch_dir,MAX_PATH+1)==NULL){
@@ -35,8 +42,8 @@ int main()
             continue;
         };
         // resetting sys foreground process time
-        runtime=0;
-        bphead=checkstatus(bphead);
+        runtime=0;// TODO: for individual?
+        
         char*semi_saveptr=NULL;
         char*semitoken=__strtok_r(input,MULTI_COMMANDS,&semi_saveptr);
         while (semitoken){
@@ -157,7 +164,7 @@ int main()
                             // printf("type = %d is_ipipe = %d is_opipe = %d\n",type,is_ipipe,is_opipe);
                             
                             runcmd(type,onlycmd,launch_dir,curr_dir,prev_dir,
-                            &bphead,longcmd,&runtime, shellp,
+                            &bphead,&allphead,longcmd,&runtime, shellp,
                             is_ipipe,is_opipe,i_file,o_file,ipipe,opipe,oappend);
                             
                             is_ipipe=1;
@@ -174,6 +181,7 @@ int main()
         // store in pastevents
         if(strlen(executed)){
             storeevent(launch_dir,executed);
-        }        
+        }
+        bphead=checkstatus(bphead);        
     }
 }

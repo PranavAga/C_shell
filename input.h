@@ -4,6 +4,12 @@
 #define TAB '\t'
 #define SPACE ' '
 
+struct pnode{
+    pid_t pid;
+    struct pnode* next;
+    char* name;
+};
+
 typedef struct pnode *Pnode;
 
 int isgap(char );
