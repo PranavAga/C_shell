@@ -81,7 +81,7 @@ int is_ipipe,int is_opipe,char* i_file,char* o_file,int* ipipe,int* opipe, int o
         return peek(cmdtoken+strlen(cmdtoken)+1,launch_dir,prev_dir);
     }
     else if(strcmp(PROCLORE,cmdtoken)==0){
-        return proclore(cmdtoken+strlen(cmdtoken)+1, shellp,launch_dir);
+        return proclore(cmdtoken+strlen(cmdtoken), shellp,launch_dir);
     }
     else if(strcmp(SEEK,cmdtoken)==0){
         return seek(cmdtoken+strlen(cmdtoken)+1,curr_dir,prev_dir);

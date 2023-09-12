@@ -80,8 +80,8 @@ int main()
                         char*iotoken=__strtok_r(curr_cmd,PIPE_CMD,&io_saveptr);
                         int is_opipe=0;
                         int is_ipipe=0;
-                        int ipipe[2]={STDIN_FILENO,STDOUT_FILENO};
-                        int opipe[2]={STDIN_FILENO,STDOUT_FILENO};
+                        int ipipe[2];
+                        int opipe[2];
 
                         while(iotoken){
                             char*pcurr_cmd=iotoken;
@@ -163,7 +163,8 @@ int main()
                             // printf("|CMD: %s,I: %s, O: %s|\n",cmdtoken,i_file,o_file);
                             // printf("type = %d is_ipipe = %d is_opipe = %d\n",type,is_ipipe,is_opipe);
                             
-                            runcmd(type,onlycmd,launch_dir,curr_dir,prev_dir,
+                            runcmd(type,onlycmd,
+                            launch_dir,curr_dir,prev_dir,
                             &bphead,&allphead,longcmd,&runtime, shellp,
                             is_ipipe,is_opipe,i_file,o_file,ipipe,opipe,oappend);
                             
