@@ -44,7 +44,8 @@ char*pname(Pnode all,pid_t pid){
     return "COMMAND NOT FOUND\0";
 } 
 
-// Lists all the processes that were spawned by the shell in lexicographic order
+// Lists all the active processes that were spawned by the shell in lexicographic order
+// FIXME: Q193
 int activities( Pnode allpheadptr){
     int np=0;
     Pnode temp=allpheadptr;
@@ -71,9 +72,6 @@ int activities( Pnode allpheadptr){
     char _2[17];
     // [pid] : [command name] - [State]
     for(i=0;i<np;i++){
-        printf("%d : ",pids[i]);
-        printf("%s - ",pname(allpheadptr,pids[i]));
-
         char*pidstr=int2str(pids[i]);
         char procstat[6+strlen(pidstr)+7];
         strcpy(procstat,"/proc/");
@@ -82,13 +80,16 @@ int activities( Pnode allpheadptr){
 
         FILE*statp=fopen(procstat,"r");
         if(statp==NULL){
-            if(errno==ENOENT){
-                printf("Stopped\n");
+            if(errno==ENOENT){// terminated
                 continue;
             }
             pcerror("Couldn't open process's stat file");
             return -1;
         }
+
+        printf("%d : ",pids[i]);
+        printf("%s - ",pname(allpheadptr,pids[i]));
+
         fscanf(statp,"%d %s %s",&_1,_2,status);
         fclose(statp);
         free(pidstr);

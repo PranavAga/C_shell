@@ -91,6 +91,9 @@ int runcmd(int type,char* input,
     else if(strcmp(ACTIVITIES,cmdtoken)==0){
         return activities(*allpheadptr);
     }
+    else if(strcmp(IMAN,cmdtoken)==0){
+        return iMan(strtok(NULL," "));
+    }
     else{
         time_t begin,end;
         char *list [MAX_INP/2];

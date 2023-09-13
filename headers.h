@@ -7,6 +7,7 @@
 #define RD_FILE "<"
 #define OT_FILE ">"
 #define OA_FILE ">>"
+#define MANHNAME "man.he.net"
 
 #define MAX_INP 4096
 #define MAX_PATH 255
@@ -15,6 +16,7 @@
 #define MAX_INHIST 15
 #define FP_TIMELMT 2
 #define OUT_PERMS 0644
+#define MAX_MANRESP 3000
 
 typedef long file_size;
 
@@ -30,6 +32,8 @@ typedef long file_size;
 #include <sys/stat.h>
 #include <time.h>
 #include <fcntl.h>
+#include <netdb.h>
+#include <arpa/inet.h>
 
 #include "prompt.h"
 #include "color.h"

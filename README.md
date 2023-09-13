@@ -56,7 +56,11 @@ _C Shell_
 - ### activities
     Format: <br>
     ```activities```<br>
-    Prints a list of all the processes that were spawned by your shell, in the current run, in lexicographic order.
+    Prints a list of all the active processes that were spawned by your shell, in the current run, in lexicographic order.
+- ### iMan
+    Format: <br>
+    ```iMan <command_name>```<br>
+    iMan fetches man pages from the internet using sockets and outputs it to the terminal (stdout). In this case, you are required to use the website : http://man.he.net/ to get the man pages.
 ## System commands
     Bash commands handled by execvp() is also handled.
     -   #### Foreground processes
@@ -90,6 +94,8 @@ _C Shell_
     - only first argument after "proclore" is condsidered.
 - 'seek'
     - 'search' can not be empty
+- 'iMan'
+    - not handling the html tags in between the content
 - I/O Redirection
     - throws error when the first I/O symbols don't have string next to it.
     - considers first file only when multiple files are entred for either input or output.
