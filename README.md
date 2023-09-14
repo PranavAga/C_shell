@@ -94,6 +94,8 @@ _C Shell_
     - only first argument after "proclore" is condsidered.
 - 'seek'
     - 'search' can not be empty
+- 'ping'
+    - assuming only positive integer signals are valid
 - 'iMan'
     - not handling the html tags in between the content
 - I/O Redirection

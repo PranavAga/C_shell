@@ -18,6 +18,7 @@ int proclore(char*args,pid_t shellp,char*launch_dir);
 int seek(char*args,char* curr_dir,char*prev_dir);
 int activities(Pnode allpheadptr);
 int iMan(char* cmd);
+int ping(char* args);
 
 // utility function
 void tilde2abs(char*arg,char*launch_dir,char*newdir);

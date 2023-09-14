@@ -34,6 +34,7 @@ typedef long file_size;
 #include <fcntl.h>
 #include <netdb.h>
 #include <arpa/inet.h>
+#include <signal.h>
 
 #include "prompt.h"
 #include "color.h"

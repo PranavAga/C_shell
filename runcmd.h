@@ -8,6 +8,7 @@
 #define SEEK "seek"
 #define ACTIVITIES "activities"
 #define IMAN "iMan"
+#define PING "ping"
 
 int runcmd(int type,char* input,
     char* launch_dir,char*curr_dir,char* prev_dir,

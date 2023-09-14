@@ -94,6 +94,9 @@ int runcmd(int type,char* input,
     else if(strcmp(IMAN,cmdtoken)==0){
         return iMan(strtok(NULL," "));
     }
+    else if(strcmp(PING,cmdtoken)==0){
+        return ping(cmdtoken+strlen(cmdtoken)+1);
+    }
     else{
         time_t begin,end;
         char *list [MAX_INP/2];

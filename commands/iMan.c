@@ -61,7 +61,7 @@ int iMan(char* cmd){
     char response[MAX_MANRESP+1];
     ssize_t numres= recv(socketfd,response,MAX_MANRESP,0);
     if(strstr(response,"No matches for ")){
-        pcerror("No such command");
+        cmderror("'iMan': ","No such command");
         close(socketfd);
         return -1;
     }
