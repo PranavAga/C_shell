@@ -6,7 +6,7 @@
 int str2pint(char*str){
     int ndig=strlen(str);
     if(ndig==0){
-        return -1;
+        return -2;
     }
     int num=0;
     for(int i=0;i<ndig;i++){

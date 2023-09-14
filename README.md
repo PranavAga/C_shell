@@ -57,10 +57,27 @@ _C Shell_
     Format: <br>
     ```activities```<br>
     Prints a list of all the active processes that were spawned by your shell, in the current run, in lexicographic order.
+- ### ping
+    Format: <br>
+    ```ping <pid> <signal_number>```<br>
+    Sends signals to processes. Takes signal number’s modulo with 32 before checking which signal it belongs to (assuming x86/ARM machine).
+- ### fg
+    Format: <br>
+    ```fg <pid>```<br>
+    Brings the running or stopped background process with corresponding pid to foreground, handing it the control of terminal.
+- ### bg
+    Format: <br>
+    ```bg <pid>```<br>
+    Changes the state of a stopped background process to running
 - ### iMan
     Format: <br>
     ```iMan <command_name>```<br>
     iMan fetches man pages from the internet using sockets and outputs it to the terminal (stdout). In this case, you are required to use the website : http://man.he.net/ to get the man pages.
+## Signals
+- Ctrl - C
+    Interrupts any currently running foreground process by sending it the SIGINT signal. It has no effect if no foreground process is currently running.
+- Ctrl - D
+    Logs out of the shell (after killing all processes) while having no effect on the actual terminal.
 ## System commands
     Bash commands handled by execvp() is also handled.
     -   #### Foreground processes

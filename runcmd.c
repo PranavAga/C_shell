@@ -97,14 +97,13 @@ int runcmd(int type,char* input,
     else if(strcmp(PING,cmdtoken)==0){
         return ping(cmdtoken+strlen(cmdtoken)+1);
     }
-    // else if(strcmp("lol",cmdtoken)==0){
-    //     while (1)
-    //     {
-    //         /* code */
-    //     }
-        
-    //     // TODO: Q236
-    // }
+    else if(strcmp(FG,cmdtoken)==0){
+        return fg(cmdtoken+strlen(cmdtoken)+1,shellp);
+    }
+    else if(strcmp(BG,cmdtoken)==0){
+        return bg(cmdtoken+strlen(cmdtoken)+1);
+    }
+    // TODO: neonate Q236
     else{
         time_t begin,end;
         char *list [MAX_INP/2];

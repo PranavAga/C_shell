@@ -19,9 +19,12 @@ int seek(char*args,char* curr_dir,char*prev_dir);
 int activities(Pnode allpheadptr);
 int iMan(char* cmd);
 int ping(char* args);
+int fg(char* pid,pid_t spid);
+int bg(char* pid);
 
 // utility function
 void tilde2abs(char*arg,char*launch_dir,char*newdir);
 int hyph2abs(char* cmd,char*arg,char*prev_dir,char*newdir);
+int str2pint(char*str);
 
 #endif

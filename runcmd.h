@@ -9,6 +9,8 @@
 #define ACTIVITIES "activities"
 #define IMAN "iMan"
 #define PING "ping"
+#define FG "fg"
+#define BG "bg"
 
 int runcmd(int type,char* input,
     char* launch_dir,char*curr_dir,char* prev_dir,
