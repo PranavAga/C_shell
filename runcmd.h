@@ -16,5 +16,6 @@ int runcmd(int type,char* input,
     int is_pipe,int is_opipe,char* i_file,char* o_file,int* ipipe,int* opipe, int oappend);
 void add2executed(int type,char*curr_cmd,char*executed);
 void storeevent(char*launch_dir,char* cmd);
+void killallp(Pnode allphead);
 
 #endif

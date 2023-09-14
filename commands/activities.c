@@ -45,7 +45,6 @@ char*pname(Pnode all,pid_t pid){
 } 
 
 // Lists all the active processes that were spawned by the shell in lexicographic order
-// FIXME: Q193
 int activities( Pnode allpheadptr){
     int np=0;
     Pnode temp=allpheadptr;

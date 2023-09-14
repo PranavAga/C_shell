@@ -97,6 +97,14 @@ int runcmd(int type,char* input,
     else if(strcmp(PING,cmdtoken)==0){
         return ping(cmdtoken+strlen(cmdtoken)+1);
     }
+    // else if(strcmp("lol",cmdtoken)==0){
+    //     while (1)
+    //     {
+    //         /* code */
+    //     }
+        
+    //     // TODO: Q236
+    // }
     else{
         time_t begin,end;
         char *list [MAX_INP/2];
@@ -119,6 +127,12 @@ int runcmd(int type,char* input,
             if(type){
                 if(setpgid(0,0)<0){
                     pcerror("Settign gid of a background process");
+                }
+            }
+            if(type==0){
+                __sighandler_t resetCC = signal(SIGINT,SIG_DFL);
+                if(resetCC==SIG_ERR){
+                    pcerror("Couldn't reset Ctrl+C 's signal");
                 }
             }
             int sysret=execvp(cmdtoken,list);
@@ -312,4 +326,15 @@ void storeevent(char*launch_dir,char* cmd){
         }
     }
     fclose(history);
+}
+
+// Kill all running spawned processes
+void killallp(Pnode allphead){
+    Pnode temp=allphead;
+
+    while (temp){
+        kill(temp->pid,SIGKILL);
+        temp=temp->next;
+    }
+    return;
 }

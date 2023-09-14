@@ -23,6 +23,12 @@ int main()
 
     pid_t shellp=getpid();
 
+    // ignore Ctrl+C
+    __sighandler_t ignoreCC = signal(SIGINT,SIG_IGN);
+    if(ignoreCC==SIG_ERR){
+        pcerror("Couldn't set Ctrl+C 's signal's utility");
+    }
+
     // Keep accepting commands
     while (1)
     {
@@ -35,7 +41,12 @@ int main()
         // Print appropriate prompt with username, systemname and directory before accepting input
         prompt(effective_path(launch_dir,curr_dir),longcmd,runtime);
         char input[MAX_INP];
-        fgets(input, MAX_INP, stdin);
+
+        // check for EOF (Ctrl+D)
+        if(fgets(input, MAX_INP, stdin)==0){
+            killallp(allphead);
+            break;
+        }
         char executed[MAX_INP]={ 0 };
         if(remspaces(input)){
             // printf("\n");
@@ -183,4 +194,5 @@ int main()
             storeevent(launch_dir,executed);
         }
     }
+    printf("\n");
 }
