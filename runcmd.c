@@ -103,7 +103,10 @@ int runcmd(int type,char* input,
     else if(strcmp(BG,cmdtoken)==0){
         return bg(cmdtoken+strlen(cmdtoken)+1);
     }
-    // TODO: neonate Q236
+    else if(strcmp(NEONATE,cmdtoken)==0){
+        // TODO: neonate Q236
+        return neonate(cmdtoken+strlen(cmdtoken)+1);
+    }
     else{
         time_t begin,end;
         char *list [MAX_INP/2];

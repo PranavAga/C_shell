@@ -11,6 +11,7 @@
 #define PING "ping"
 #define FG "fg"
 #define BG "bg"
+#define NEONATE "neonate"
 
 int runcmd(int type,char* input,
     char* launch_dir,char*curr_dir,char* prev_dir,

@@ -35,6 +35,9 @@ typedef long file_size;
 #include <netdb.h>
 #include <arpa/inet.h>
 #include <signal.h>
+#include <termios.h>
+#include <ctype.h>
+#include <sys/select.h>
 
 #include "prompt.h"
 #include "color.h"

@@ -6,6 +6,7 @@
 #define R "r"
 #define W "w"
 #define X "x"
+#define STOP_NEO 'x'
 
 #define PAST_PURGE "pastevents purge"
 #define PAST_EXEC "pastevents execute"
@@ -21,6 +22,7 @@ int iMan(char* cmd);
 int ping(char* args);
 int fg(char* pid,pid_t spid);
 int bg(char* pid);
+int neonate(char* args);
 
 // utility function
 void tilde2abs(char*arg,char*launch_dir,char*newdir);

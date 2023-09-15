@@ -69,6 +69,11 @@ _C Shell_
     Format: <br>
     ```bg <pid>```<br>
     Changes the state of a stopped background process to running
+- ### neonate
+    Format: <br>
+    ```neonate -n [time_arg]```<br>
+    Prints the PID of the most recently created process on the system, this PID will be printed every [time_arg] seconds until the key ‘x’ is pressed
+
 - ### iMan
     Format: <br>
     ```iMan <command_name>```<br>

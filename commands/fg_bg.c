@@ -15,7 +15,6 @@ int extract_pid(char*cmd,char*args){
     int pid=str2pint(str_pid);
     if(pid<0){
         cmderror(cmd,": Invalid PID");
-        printf("PID: %d\n",pid);
         return -1;
     }
     return pid;
