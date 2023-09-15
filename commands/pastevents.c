@@ -101,6 +101,10 @@ char*pastevents(char*launch_dir,char*cmd){
         cmderror("pastevents",": invalid arguments");
         return NULL;
     }
-    // TODO: check ps exec idx=> "warp testdir"
+    
+    // Checking for '\n'
+    if(new_cmd[strlen(new_cmd)-1]=='\n'){
+        new_cmd[strlen(new_cmd)-1]='\0';
+    }
     return strlen(new_cmd)>0?new_cmd:NULL;
 }

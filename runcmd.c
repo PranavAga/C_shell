@@ -104,7 +104,6 @@ int runcmd(int type,char* input,
         return bg(cmdtoken+strlen(cmdtoken)+1);
     }
     else if(strcmp(NEONATE,cmdtoken)==0){
-        // TODO: neonate Q236
         return neonate(cmdtoken+strlen(cmdtoken)+1);
     }
     else{

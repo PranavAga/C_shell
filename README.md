@@ -86,7 +86,7 @@ _C Shell_
 ## System commands
     Bash commands handled by execvp() is also handled.
     -   #### Foreground processes
-        Control of terminal is handed over to this process for the time being while it is running. Time taken by the foreground process and the name of the process is printed in the next prompt if process takes > 2 seconds to run.
+        Control of terminal is handed over to this process for the time being while it is running. Time taken by the latest foreground process and the name of the command is printed in the next prompt if that process takes > 2 seconds to run.
 
     -   #### Background processes
         Any command invoked with “&” is treated as a background command, but is not actually a background process. The shell will spawn that process but doesn’t hand the control of terminal to it. Whenever a new background process is started, the PID of the newly created background process is printed. Whenever background process finishes, a message displays (after command is entered), all background processes ended between the last command run.

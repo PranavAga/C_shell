@@ -38,6 +38,7 @@ int handlewrap(char*arg,char*launch_dir,char*prev_dir){
     }
     else{
         if(chdir(arg)){
+            printf("'%s'\n",arg);
             pcerror("warping");
             return -1;
         }

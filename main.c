@@ -53,7 +53,7 @@ int main()
             continue;
         };
         // resetting sys foreground process time
-        runtime=0;// TODO: for individual?
+        runtime=0;
         bphead=checkstatus(bphead);
         char*semi_saveptr=NULL;
         char*semitoken=__strtok_r(input,MULTI_COMMANDS,&semi_saveptr);
